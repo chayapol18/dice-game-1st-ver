@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <style>
+        body {
+            background-color: #eb9e46;
+        }
+
+        .all {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        p {
+            font-size: 20px;
+        }
+        
+        .one {
+            background-color: #fff;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            margin: auto;
+            border: black solid 5px;
+        } 
+
+        .one * {
+            text-align: center;
+            margin: auto;
+            font-size: 30px;
+        } 
+
+        .scoreP1 {
+            font-size: 50px;
+        }
+
+        .number {
+            background-color: #8aff47;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            margin: auto;
+            border: black solid 5px;
+        } 
+
+        .number * {
+            text-align: center;
+            margin: auto;
+            font-size: 30px;
+        } 
+
+        .currentNumber {
+            font-size: 50px;
+        }
+
+        .two {
+            background-color: #fff;
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            margin: auto;
+            border: black solid 5px;
+        }
+
+        .two * {
+            text-align: center;
+            margin: auto;
+            font-size: 30px;
+        } 
+
+        .scoreP2 {
+            font-size: 50px;
+        }
+
+        .roll-form {
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto;
+        }
+
+        button {
+            margin: auto;
+            width: 150px;
+            height: 50px;
+        }
+
+        .setFocus {
+            background-color: #ccc;
+            font-weight: bold;
+            font-style: italic;
+            color: red;
+        }
+
+        .setFocus p {
+            color: black;
+            font-style: normal;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="all">
+        <div class="allOne">
+            <div class="one setFocus">
+                <h2 class="playerOne">Player 1</h2>
+                <p class="scoreP1">0</p>
+            </div>  
+        </div>
+
+        <div class="number">
+            <h3>Current Number</h3>
+            <h3 class="currentNumber">0</h3>
+        </div>
+
+        <div class="allTwo">
+            <div class="two">
+                <h2 class="playerTwo">Player 2</h2>
+                <p class="scoreP2">0</p>
+            </div>
+        </div>
+    </div>
+        <form class="roll-form" action="">
+            <button type="button" value="roll" onclick="randomNumber(this)">Roll Dice</button> <br><br><br>
+            <button type="button" value="hold" onclick="randomNumber(this)">Hold</button> <br><br><br>
+            <button type="button" value="reset" onclick="randomNumber(this)">Reset</button>
+        </form>
+    
+    <script>
+        let count = 0;
+        let roll;
+        let keepOne = 0;
+        let keepTwo = 0;
+        const countObj = document.querySelector('.currentNumber');
+        const one = document.querySelector('.one');
+        const two = document.querySelector('.two');
+        const p1 = document.querySelector('.playerOne');
+        const p2 = document.querySelector('.playerTwo');
+        const scoreP1 = document.querySelector('.scoreP1');
+        const scoreP2 = document.querySelector('.scoreP2');
+        const allOne = document.querySelector('.allOne');
+        const allTwo = document.querySelector('.allTwo');
+        countObj.innerHTML = count;
+
+        function randomNumber(input) {
+            const mode = input.value;
+            if (mode === 'roll') { 
+                roll = Math.floor(Math.random() * 6) + 1
+               if (roll !== 1) {
+                count += roll;
+               } else {
+                count = 0;
+                //เปลี่ยนผู้เล่น
+                one.classList.toggle('setFocus')
+                two.classList.toggle('setFocus')
+               }
+               console.log(roll)
+            } else if (mode === 'hold') {
+                //ส่งค่าให้ผู้เล่นที่โฟกัสอยู่
+                //เปลี่ยนผู้เล่น
+                if (allOne.querySelector('.one') !== null && allOne.querySelector('.setFocus') !== null) {
+                    if (scoreP1.innerHTML !== 0) {
+                        keepOne += count
+                        scoreP1.innerHTML = keepOne;
+                    } else if (scoreP1.innerHTML === 0) {
+                        scoreP1.innerHTML = count;
+                    }
+                } else if (allTwo.querySelector('.two') !== null && allTwo.querySelector('.setFocus') !== null) {
+                    if (scoreP2.innerHTML !== 0) {
+                        keepTwo += count
+                        scoreP2.innerHTML = keepTwo;
+                    } else if (scoreP2.innerHTML === 0) {
+                        scoreP2.innerHTML = count;
+                    }
+                }
+                count = 0;
+                one.classList.toggle('setFocus');
+                two.classList.toggle('setFocus');
+            } else if (mode === 'reset') {
+                count = 0;
+                p1.innerHTML = 'Player 1';
+                scoreP1.innerHTML = 0;
+                keepOne = 0;
+                p2.innerHTML = 'Player 2';
+                scoreP2.innerHTML = 0;
+                keepTwo = 0;
+                if (allTwo.querySelector('.two') !== null && allTwo.querySelector('.setFocus') !== null) {
+                    one.classList.toggle('setFocus');
+                    two.classList.toggle('setFocus');
+                }
+            }
+
+            if (keepOne >= 100) {
+                p1.innerHTML = 'Winner!';
+            } else if (keepTwo >= 100) {
+                p2.innerHTML = 'Winner!';
+            }
+            countObj.innerHTML = count
+        }
+    </script>
+</body>
+</html>
